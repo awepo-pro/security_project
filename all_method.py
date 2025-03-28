@@ -2,6 +2,9 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 import time
 import os
+from rsa.public_key_cipher import rsa_encryption, rsa_decryption
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # ========================
 #      DES Implementation
@@ -521,7 +524,7 @@ class CryptoApp:
         # Algorithm Selection
         self.algorithm = tk.StringVar(value="DES")
         tk.Label(root, text="Select Algorithm:").grid(row=0, column=0, padx=5, pady=5)
-        algorithms = [("DES", "DES"), ("3DES", "3DES"), ("AES", "AES"), ("Vigenère", "Vigenère")]
+        algorithms = [("DES", "DES"), ("3DES", "3DES"), ("AES", "AES"), ("Vigenère", "Vigenère"), ("RSA", "RSA")]
         for i, (text, val) in enumerate(algorithms):
             tk.Radiobutton(root, text=text, variable=self.algorithm, value=val).grid(row=0, column=i+1)
         
@@ -561,8 +564,11 @@ class CryptoApp:
 
             # Generate output filename
             base, ext = os.path.splitext(in_file)
+            
             if mode == "encrypt":
-                out_file = f"{base}_encrypted{ext}"
+                base = os.path.basename(base)
+                out_file = f"{BASE_DIR}/{base}_encrypted.txt"
+                print(f'[DEBUG] output to: {out_file}')
             else:
                 if "_encrypted" not in base:
                     raise ValueError("File to decrypt must have '_encrypted' in name")
@@ -596,6 +602,18 @@ class CryptoApp:
 
                 if mode == "encrypt" and decrypted != data:
                     raise ValueError("Verification failed: Vigenère decryption mismatch")
+            
+            # 1024 bits key size
+            elif algorithm == 'RSA':
+                if mode == 'encrypt':
+                    with open(out_file, 'w') as output:
+                        print(rsa_encryption(in_file), file=output)
+                
+                elif mode == 'decrypt':
+                    print(f'[DEBUG] decrypting file: {in_file}')
+                    with open(out_file, 'w', encoding='utf-8') as output:
+                        print(rsa_decryption(in_file), file=output)
+                    
 
             # Other Algorithms (DES/3DES/AES)
             else:
