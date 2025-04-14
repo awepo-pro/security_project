@@ -81,11 +81,14 @@ def dencryption(encrypted_msg, msg_len, key, block_size):
 
 	return ''.join(ret)
 
-def get_private_key():
+def get_private_key(key):
 	key_size, n, d = 0, 0, 0
 
-	with open(f'{BASE_DIR}/hello_priv.txt') as target:
-		key_size, n, d = target.read().split(', ')
+	if key == '':
+		with open(f'{BASE_DIR}/hello_priv.txt') as target:
+			key_size, n, d = target.read().split(', ')
+	else:
+		key_size, n, d = key.split(', ')
 
 	return int(key_size), int(n), int(d)
 
@@ -97,8 +100,8 @@ def read_file(msg_file):
 
 	return int(msg_len), int(block_size), encrypted_msg
 
-def rsa_decryption(msg_file):
-	key_size, n, d = get_private_key()
+def rsa_decryption(msg_file, key=None):
+	key_size, n, d = get_private_key(key)
 	msg_len, block_size, encrypted_msg = read_file(msg_file)
 
 	encrypted_msg = [x for x in encrypted_msg.split(', ')]

@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import filedialog, messagebox
 import time
 import os
-from rsa.public_key_cipher import rsa_encryption, rsa_decryption
+from src.rsa.public_key_cipher import rsa_encryption, rsa_decryption
 import tools 
 import shutil
 from src.cryption_impl import *
@@ -88,6 +88,8 @@ class CryptoApp:
             
             # 1024 bits key size
             elif algorithm == 'RSA':
+                key = self.key_entry.get()
+
                 if mode == 'encrypt':
                     with open(out_file, 'w') as output:
                         print(rsa_encryption(in_file), file=output)
@@ -101,9 +103,9 @@ class CryptoApp:
                 elif mode == 'decrypt':
                     print(f'[DEBUG] decrypting file: {in_file}')
                     with open(out_file, 'w', encoding='utf-8') as output:
-                        print(rsa_decryption(in_file), file=output)
+                        print(rsa_decryption(in_file, key), file=output)
 
-                    messagebox.showinfo('info', f'your message is ready in {os.path.basename(in_file)}!')
+                    messagebox.showinfo('info', f'your message is ready in {os.path.basename(out_file)}!')
 
             # Other Algorithms (DES/3DES/AES)
             else:
@@ -172,47 +174,63 @@ class CryptoApp:
         except Exception as e:
             messagebox.showerror("Error", str(e))
 
+
     def encrypt(self):
         input = self.file_entry.get()
         algorithm = self.algorithm.get()
 
-        base, _ = os.path.splitext(input)
-        
-        base = os.path.basename(base)
-        out_file = f"{OUTPUT_DIR}/{base}_encrypted.txt"
-        print(f'[DEBUG] output to: {out_file}')
-        
         if tools.is_file_path(input):
+            base, _ = os.path.splitext(input)
+        
+            base = os.path.basename(base)
+            out_file = f"{OUTPUT_DIR}/{base}_encrypted.txt"
+            print(f'[DEBUG] output to: {out_file}')
             self.encrypt_file(input, out_file, algorithm, base)
         else:
-            self.encrypt_msg(input, out_file, algorithm, base)
+            base = 'tmp'
+            in_file = 'dummy.txt'
+            with open(in_file, 'w') as dummy:
+                print(input, file=dummy)
+        
+            out_file = f"{OUTPUT_DIR}/{base}_encrypted.txt"
+            print(f'[DEBUG] output to: {out_file}')
+
+            self.encrypt_file(in_file, out_file, algorithm, base)
+            os.remove(in_file)
 
     def decrypt(self):
         input = self.file_entry.get()
         algorithm = self.algorithm.get()
 
         if tools.is_file_path(input):
-            self.decrypt_file(input, algorithm)
+
+            # Generate output filename
+            base, _ = os.path.splitext(input)
+            if "_encrypted" not in base:
+                raise ValueError("File to decrypt must have '_encrypted' in name")
+            base_part = base.replace("_encrypted", "")
+            out_file = f"{base_part}_decrypted.txt"
+
+            self.decrypt_file(input, out_file, algorithm, base)
         else:
-            self.decrypt_msg(input, algorithm)
+            in_file = 'dummy_encrypted.txt'
+            with open(in_file, 'w') as dummy:
+                print(input, file=dummy)
 
-    def encrypt_msg(self, in_file, algorithm):
-        pass
+            base, _ = os.path.splitext(in_file)
 
-    def decrypt_msg(self, in_file, algorithm):
-        pass
+            if "_encrypted" not in base:
+                raise ValueError("File to decrypt must have '_encrypted' in name")
+            base_part = 'tmp'
+            out_file = f"{OUTPUT_DIR}/{base_part}_decrypted.txt"
+
+            self.decrypt_file(in_file, out_file, algorithm, base)
+            os.remove(in_file)
 
     def encrypt_file(self, in_file, out_file, algorithm, base):
         self.process_file("encrypt", algorithm, in_file, out_file, base)
 
-    def decrypt_file(self, in_file, algorithm):
-        # Generate output filename
-        base, _ = os.path.splitext(in_file)
-        if "_encrypted" not in base:
-            raise ValueError("File to decrypt must have '_encrypted' in name")
-        base_part = base.replace("_encrypted", "")
-        out_file = f"{base_part}_decrypted.txt"
-
+    def decrypt_file(self, in_file, out_file, algorithm, base):
         self.process_file("decrypt", algorithm, in_file, out_file, base)
 
 

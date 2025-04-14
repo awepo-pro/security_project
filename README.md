@@ -10,4 +10,4 @@ python all_method.py
 ```
 
 # input
-`123.txt` is an example input
+`example.txt` is an example input
