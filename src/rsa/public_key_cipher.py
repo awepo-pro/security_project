@@ -92,7 +92,7 @@ def dencryption(encrypted_msg, msg_len, key, block_size):
 def get_private_key(key):
 	key_size, n, d = 0, 0, 0
 
-	if key == '':
+	if key == '' or key is None:
 		if not os.path.exists(PRIVATE_KEY_FILE):
 			print('[DEBUG]: private key not found!')
 			exit(1)
