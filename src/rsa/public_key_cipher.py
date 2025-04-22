@@ -4,15 +4,15 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SYMBOLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 !?.,<>()*\n\t\''
-    
+PUBLIC_KEY_FILE = f'{BASE_DIR}/hello_pub.txt'
+PRIVATE_KEY_FILE = f'{BASE_DIR}/hello_priv.txt'
+
+sys.path.append(BASE_DIR)
+from make_key import make_key_file
 
 def get_public_key():
-	file_name = f'{BASE_DIR}/hello_pub.txt'
-	if not os.path.exists(file_name):
-		exit(f'no {file_name}')
-
 	key_size, n, e = 0, 0, 0
-	with open(file_name, 'r') as target:
+	with open(PUBLIC_KEY_FILE, 'r') as target:
 		key_size, n, e = target.readline().split(', ')
 
 	return int(key_size), int(n), int(e)
@@ -42,6 +42,14 @@ def rsa_encryption(msg_file, block_size=None):
 		for x in msg:
 			if x not in SYMBOLS:
 				SYMBOLS += x
+
+	if not os.path.exists(PUBLIC_KEY_FILE) or not os.path.exists(PRIVATE_KEY_FILE):
+		key_size = 1024
+		pub_key, pri_key = make_key_file(key_size, True)
+		with open(PUBLIC_KEY_FILE, 'w') as pub, open(PRIVATE_KEY_FILE, 'w') as pri:
+			print(f'{key_size}, {pub_key[0]}, {pub_key[1]}', file=pri, end='')
+			print(f'{key_size}, {pri_key[0]}, {pri_key[1]}', file=pub, end='')
+			print('[DEBUG]: keys generated!')
         
 	key_size, n, e = get_public_key()
 
@@ -85,6 +93,10 @@ def get_private_key(key):
 	key_size, n, d = 0, 0, 0
 
 	if key == '':
+		if not os.path.exists(PRIVATE_KEY_FILE):
+			print('[DEBUG]: private key not found!')
+			exit(1)
+			
 		with open(f'{BASE_DIR}/hello_priv.txt') as target:
 			key_size, n, d = target.read().split(', ')
 	else:
