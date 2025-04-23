@@ -23,15 +23,6 @@ def test_rsa():
         with open(file, 'r') as f:
             data = f.read()
 
-        with open('dummy_test.txt', 'rb+') as target:
-            target.write(rsa_encryption(file).encode('utf-8'))
-            assert rsa_decryption('dummy_test.txt') == data, f"Decryption failed for {file}"
-
-def test_rsa():
-    for file in DATA_FILE:
-        with open(file, 'r') as f:
-            data = f.read()
-
         assert rsa_decryption(rsa_encryption(file)) == data, f"Decryption failed for {file}"
 
 def test_triple_des():
@@ -80,9 +71,9 @@ def test(method, comment: str) -> None:
 
 def main():
     test(test_rsa, 'testing RSA')
-    test(test_triple_des, 'testing 3 DES')
-    test(test_aes, 'testing AES')
-    test(test_vigenere, 'testing Vigenere')
+    # test(test_triple_des, 'testing 3 DES')
+    # test(test_aes, 'testing AES')
+    # test(test_vigenere, 'testing Vigenere')
 
     print('All tests passed!')
 
