@@ -90,4 +90,3 @@ if __name__ == '__main__':
     key = [gen_key(KEY_SIZE) for _ in range(int(1024 / KEY_SIZE))]
     main()
 
-    
