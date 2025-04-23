@@ -80,9 +80,9 @@ def test(method, comment: str) -> None:
 
 def main():
     test(test_rsa, 'testing RSA')
-    # test(test_triple_des, 'testing 3 DES')
-    # test(test_aes, 'testing AES')
-    # test(test_vigenere, 'testing Vigenere')
+    test(test_triple_des, 'testing 3 DES')
+    test(test_aes, 'testing AES')
+    test(test_vigenere, 'testing Vigenere')
 
     print('All tests passed!')
 
