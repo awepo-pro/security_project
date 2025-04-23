@@ -3,9 +3,19 @@ from tkinter import filedialog, messagebox
 import time
 import os
 from src.rsa.public_key_cipher import rsa_encryption, rsa_decryption
-import tools 
 import shutil
 from src.cryption_impl import *
+
+def copy_to_clipboard(text):
+    root = tk.Tk()
+    root.withdraw()
+    root.clipboard_clear()
+    root.clipboard_append(text)
+    root.update()
+    root.destroy()
+
+def is_file_path(path):
+    return os.path.exists(path)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 OUTPUT_DIR = f'{BASE_DIR}/output'
@@ -180,7 +190,7 @@ class CryptoApp:
         input = self.file_entry.get()
         algorithm = self.algorithm.get()
 
-        if tools.is_file_path(input):
+        if is_file_path(input):
             base, _ = os.path.splitext(input)
         
             base = os.path.basename(base)
@@ -203,7 +213,7 @@ class CryptoApp:
         input = self.file_entry.get()
         algorithm = self.algorithm.get()
 
-        if tools.is_file_path(input):
+        if is_file_path(input):
 
             # Generate output filename
             base, _ = os.path.splitext(input)
