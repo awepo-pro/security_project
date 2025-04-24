@@ -70,7 +70,7 @@ def test(method, comment: str) -> None:
     print(f'test finished in {end - start:.2f} seconds!')
 
 def main():
-    # test(test_rsa, 'testing RSA')
+    test(test_rsa, 'testing RSA')
     test(test_triple_des, 'testing 3 DES')
     test(test_aes, 'testing AES')
     test(test_vigenere, 'testing Vigenere')
