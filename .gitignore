@@ -179,3 +179,5 @@ output/
 *_pub.txt
 
 images/
+*dummy.txt
+report/

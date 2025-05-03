@@ -24,8 +24,8 @@ total_words = 0
 data_stored = {}
 
 def result_output(comment):
-    with open('record_time.txt', 'w') as output:
-        output.write(comment)
+    with open('record_time.txt', 'a') as output:
+        output.write(comment + '\n')
 
 def get_input(file, mode='r'):
     global total_words
@@ -44,7 +44,7 @@ def test(method):
         start = time.perf_counter()
         method()
         end = time.perf_counter()
-        result_output(f"test finished in {end - start:.2f} seconds!", end='\n\n')
+        result_output(f"test finished in {end - start:.2f} seconds!\n")
 
     return wrapper
 

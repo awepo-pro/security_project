@@ -1,0 +1,86 @@
+testing 3 DES
+start processing /home/awepo/nd/security/test/data_set/data_set3.txt
+use 61.115093s to process /home/awepo/nd/security/test/data_set/data_set3.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set7.txt
+use 81.383694s to process /home/awepo/nd/security/test/data_set/data_set7.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set6.txt
+use 41.853527s to process /home/awepo/nd/security/test/data_set/data_set6.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set1.txt
+use 717.729507s to process /home/awepo/nd/security/test/data_set/data_set1.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set5.txt
+use 101.879770s to process /home/awepo/nd/security/test/data_set/data_set5.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set2.txt
+use 607.097334s to process /home/awepo/nd/security/test/data_set/data_set2.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set4.txt
+use 171.055438s to process /home/awepo/nd/security/test/data_set/data_set4.txt
+
+start processing /home/awepo/nd/security/test/data_set/utf-8/data_set_utf2.txt
+use 360.343730s to process /home/awepo/nd/security/test/data_set/utf-8/data_set_utf2.txt
+
+start processing /home/awepo/nd/security/test/data_set/utf-8/data_set_utf1.txt
+use 168.259354s to process /home/awepo/nd/security/test/data_set/utf-8/data_set_utf1.txt
+
+test finished in 2310.72 seconds!
+
+testing AES
+start processing /home/awepo/nd/security/test/data_set/data_set3.txt
+use 22.442841s to process /home/awepo/nd/security/test/data_set/data_set3.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set7.txt
+use 30.842179s to process /home/awepo/nd/security/test/data_set/data_set7.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set6.txt
+use 15.705216s to process /home/awepo/nd/security/test/data_set/data_set6.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set1.txt
+use 444.269285s to process /home/awepo/nd/security/test/data_set/data_set1.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set5.txt
+use 40.374139s to process /home/awepo/nd/security/test/data_set/data_set5.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set2.txt
+use 333.670967s to process /home/awepo/nd/security/test/data_set/data_set2.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set4.txt
+use 68.566268s to process /home/awepo/nd/security/test/data_set/data_set4.txt
+
+start processing /home/awepo/nd/security/test/data_set/utf-8/data_set_utf2.txt
+use 152.041776s to process /home/awepo/nd/security/test/data_set/utf-8/data_set_utf2.txt
+
+start processing /home/awepo/nd/security/test/data_set/utf-8/data_set_utf1.txt
+use 66.977600s to process /home/awepo/nd/security/test/data_set/utf-8/data_set_utf1.txt
+
+test finished in 1174.89 seconds!
+
+testing Vigenere
+
+start processing /home/awepo/nd/security/test/data_set/data_set3.txt
+use 0.115981s to process /home/awepo/nd/security/test/data_set/data_set3.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set7.txt
+use 0.154054s to process /home/awepo/nd/security/test/data_set/data_set7.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set6.txt
+use 0.074421s to process /home/awepo/nd/security/test/data_set/data_set6.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set1.txt
+use 1.308425s to process /home/awepo/nd/security/test/data_set/data_set1.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set5.txt
+use 0.190136s to process /home/awepo/nd/security/test/data_set/data_set5.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set2.txt
+use 1.186509s to process /home/awepo/nd/security/test/data_set/data_set2.txt
+
+start processing /home/awepo/nd/security/test/data_set/data_set4.txt
+use 0.324499s to process /home/awepo/nd/security/test/data_set/data_set4.txt
+
+test finished in 3.37 seconds!
+
+total characters: 30626969All tests passed!
