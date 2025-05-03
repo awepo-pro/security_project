@@ -4,8 +4,8 @@ import sys
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 SYMBOLS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890 !?.,<>()*\n\t\''
-PUBLIC_KEY_FILE = f'{BASE_DIR}/hello_pub.txt'
-PRIVATE_KEY_FILE = f'{BASE_DIR}/hello_priv.txt'
+PUBLIC_KEY_FILE = f'{BASE_DIR}/hello2048_pub.txt'
+PRIVATE_KEY_FILE = f'{BASE_DIR}/hello2048_priv.txt'
 
 from test_make_key import make_key_file
 
@@ -20,6 +20,7 @@ def public_key_encryption(msg, key, block_size):
 	ret = []
 	n, e = key
 
+	print(len(msg), block_size)
 	for start_idx in range(0, len(msg), block_size):
 		value = 0
 
@@ -30,40 +31,51 @@ def public_key_encryption(msg, key, block_size):
 		# C = M^e (mod n)
 		ret.append(str(pow(value, e, n)))
 
-	# separate blocks by ', ''
+	# separate blocks by ', '
 	return ', '.join(ret)
 
 def rsa_encryption(msg_file, block_size=None):
 	global SYMBOLS
-	with open(msg_file, 'r') as target:
-		msg = target.read()
-  
-		for x in msg:
-			if x not in SYMBOLS:
-				SYMBOLS += x
+	msg = ""
+
+	if len(msg_file) < 100 and os.path.exists(msg_file):
+		with open(msg_file, "r") as target:
+			msg = target.read()
+
+	else:
+		msg = msg_file
+		print(f'this is msg: {msg[:100]}')
+
+	for x in msg:
+		if x not in SYMBOLS:
+			SYMBOLS += x
+
+	msg = msg * 20
 
 	if not os.path.exists(PUBLIC_KEY_FILE) or not os.path.exists(PRIVATE_KEY_FILE):
 		key_size = 1024
 		pub_key, pri_key = make_key_file(key_size, True)
-		with open(PUBLIC_KEY_FILE, 'w') as pub, open(PRIVATE_KEY_FILE, 'w') as pri:
-			print(f'{key_size}, {pub_key[0]}, {pub_key[1]}', file=pri, end='')
-			print(f'{key_size}, {pri_key[0]}, {pri_key[1]}', file=pub, end='')
-			print('[DEBUG]: keys generated!')
-        
+		with open(PUBLIC_KEY_FILE, "w") as pub, open(PRIVATE_KEY_FILE, "w") as pri:
+			print(f"{key_size}, {pub_key[0]}, {pub_key[1]}", file=pri, end="")
+			print(f"{key_size}, {pri_key[0]}, {pri_key[1]}", file=pub, end="")
+			print("[DEBUG]: keys generated!")
+
 	key_size, n, e = get_public_key()
 
-	# 2 ** key_size > len(SYMBOLS) ** block_size => lg(2 ** key_size) / lg(SYMBOLS) > block_size
+    # 2 ** key_size > len(SYMBOLS) ** block_size => lg(2 ** key_size) / lg(SYMBOLS) > block_size
 	if block_size is None:
-		block_size = int(math.log(2 ** key_size) // len(SYMBOLS))
-	elif not math.log(2 ** key_size, len(SYMBOLS)) >= block_size:
-		exit('block_size is too large')
+		block_size = int(math.log(2**key_size) // len(SYMBOLS))
+		
+		if block_size == 0:
+			exit('key size too small')
+	elif not math.log(2**key_size, len(SYMBOLS)) >= block_size:
+		exit("block_size is too large")
 
 	encrypted_msg = public_key_encryption(msg, (n, e), block_size)
 
-	# with open(f'{BASE_DIR}/magic_encryption.txt', 'w') as target:
-	# 	print(f'{len(msg)}_{block_size}_{encrypted_msg}', file=target, end='')
-  
-	return f'{len(msg)}_{block_size}_{encrypted_msg}'
+    # with open(f'{BASE_DIR}/magic_encryption.txt', 'w') as target:
+    # 	print(f'{len(msg)}_{block_size}_{encrypted_msg}', file=target, end='')
+	return f"{len(msg)}_{block_size}_{encrypted_msg}"
 
 def dencryption(encrypted_msg, msg_len, key, block_size):
 	n, d = key
@@ -80,6 +92,7 @@ def dencryption(encrypted_msg, msg_len, key, block_size):
 				msg_value = msg_value % (len(SYMBOLS) ** i)
     
 				if char_idx >= len(SYMBOLS):
+					assert False
 					msg.insert(0, '<UNK>')
 				else:
 					msg.insert(0, SYMBOLS[char_idx])

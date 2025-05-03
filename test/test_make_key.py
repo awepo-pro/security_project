@@ -21,7 +21,6 @@ def x_gcd(a, b):
 	return tb, ta - a // b * tb, gcd
 
 def inv_mod(a, b):
-	print(f'[DEBUG]: using inv_mod')
 	# x, y, gcd = x_gcd(a, b)
 	# assert gcd == 1
 
@@ -109,16 +108,16 @@ def make_key_file(key_size, get_result=False):
 	else:
 		file_name = input('file location: ')
 
-		if os.path.exists(f'{file_name}_priv.txt') or os.path.exists(f'{file_name}_pub.txt'):
+		if os.path.exists(f'{file_name}2048_priv.txt') or os.path.exists(f'{file_name}2048_pub.txt'):
 			exit('file exists! not wise to rewrite the file')
 
 		public_key, private_key = generate_key(key_size)
 
-		with open(f'{file_name}_priv.txt', 'w') as priv, open(f'{file_name}_pub.txt', 'w') as pub:
+		with open(f'{file_name}2048_priv.txt', 'w') as priv, open(f'{file_name}2048_pub.txt', 'w') as pub:
 			print(f'{key_size}, {public_key[0]}, {public_key[1]}', file=priv, end='')
 			print(f'{key_size}, {private_key[0]}, {private_key[1]}', file=pub, end='')
 
-		print(f'exported to {file_name}_priv.txt and {file_name}_pub.txt!')
+		print(f'exported to {file_name}2048_priv.txt and {file_name}2048_pub.txt!')
 
 if __name__ == '__main__':
-	make_key_file(1024)
+	make_key_file(2048)
